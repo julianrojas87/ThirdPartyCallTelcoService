@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="all" name="ThirdPartyCallTelcoService">
+    <target name="init">
+        <path id="slee">
+            <pathelement location="lib/slee.jar"/>
+        </path>
+        <taskdef classname="org.mobicents.eclipslee.ant.SbbJar"
+            classpath="lib/slee-tasks.jar" name="sbbjar"/>
+        <taskdef classname="org.mobicents.eclipslee.ant.EventJar"
+            classpath="lib/slee-tasks.jar" name="eventjar"/>
+        <taskdef classname="org.mobicents.eclipslee.ant.ProfileSpecJar"
+            classpath="lib/slee-tasks.jar" name="profilespecjar"/>
+        <taskdef classname="org.mobicents.eclipslee.ant.DeployableJar"
+            classpath="lib/slee-tasks.jar" name="deployablejar"/>
+        <taskdef
+            classname="org.mobicents.eclipslee.ant.ResourceAdaptorTypeJar"
+            classpath="lib/slee-tasks.jar" name="resourceadaptortypejar"/>
+        <taskdef
+            classname="org.mobicents.eclipslee.ant.ResourceAdaptorJar"
+            classpath="lib/slee-tasks.jar" name="resourceadaptorjar"/>
+        <path id="ExternalComponents">
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/jain-sip-api-1.2.jar"/>
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/jain-sip-ri-1.2.170.jar"/>
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/sip11-events-2.7.0.FINAL.jar"/>
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/sip11-library-2.7.0.FINAL.jar"/>
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/sip11-ra-2.7.0.FINAL.jar"/>
+            <pathelement location="lib/DU/sip11-ra-DU-2.7.0.FINAL-Eclipslee.jar/jars/sip11-ratype-2.7.0.FINAL.jar"/>
+        </path>
+        <path id="path-B2BUA-sbb">
+            <pathelement location="/home/julian/Telcomp-Workspace/ThirdPartyCallTelcoService/jars/EndThirdPartyCallTelcoService-event.jar"/>
+            <pathelement location="/home/julian/Telcomp-Workspace/ThirdPartyCallTelcoService/jars/StartThirdPartyCallTelcoService-event.jar"/>
+        </path>
+    </target>
+    <target depends="init" name="all">
+        <ant target="build-Contact-sbb"/>
+        <ant target="build-FireInvite-sbb"/>
+        <ant target="build-StartThirdPartyCallTelcoService-event"/>
+        <ant target="build-EndThirdPartyCallTelcoService-event"/>
+        <ant target="build-B2BUA-sbb"/>
+        <ant target="build-thirdPartyCall-DU"/>
+    </target>
+    <target depends="init" name="clean">
+        <ant target="clean-Contact-sbb"/>
+        <ant target="clean-FireInvite-sbb"/>
+        <ant target="clean-StartThirdPartyCallTelcoService-event"/>
+        <ant target="clean-EndThirdPartyCallTelcoService-event"/>
+        <ant target="clean-B2BUA-sbb"/>
+        <ant target="clean-thirdPartyCall-DU"/>
+    </target>
+    <target depends="init" name="build-Contact-sbb">
+        <mkdir dir="classes/Contact-sbb"/>
+        <mkdir dir="jars/"/>
+        <javac destdir="classes/Contact-sbb" includeantruntime="false"
+            includes="org/telcomp/sbb/ContactSbb.java,org/telcomp/sbb/ContactSbbLocalObject.java,org/telcomp/data/UsersinfoDao.java,
+            org/telcomp/data/Usersinfo.java,org/telcomp/data/NotFoundException.java,org/telcomp/data/ContactManager.java" srcdir="src">
+            <classpath>
+                <path refid="slee"/>
+            </classpath>
+        </javac>
+        <copy file="src/org/telcomp/sbb/Contact-sbb-jar.xml" tofile="classes/Contact-sbb/sbb-jar.xml"/>
+        <jar basedir="classes/Contact-sbb"
+            destfile="jars/Contact-sbb.jar" includes="org/telcomp/sbb/*.class,org/telcomp/data/*.class">
+            <metainf dir="classes/Contact-sbb" includes="sbb-jar.xml"/>
+        </jar>
+    </target>
+    <target name="clean-Contact-sbb">
+        <delete file="jars/Contact-sbb.jar"/>
+        <delete dir="classes/Contact-sbb"/>
+    </target>
+    <target depends="init" name="build-FireInvite-sbb">
+        <mkdir dir="classes/FireInvite-sbb"/>
+        <mkdir dir="jars/"/>
+        <javac destdir="classes/FireInvite-sbb" includeantruntime="false"
+            includes="org/telcomp/sbb/FireInviteSbb.java,org/telcomp/sbb/FireInviteSbbLocalObject.java" srcdir="src">
+            <classpath>
+                <path refid="ExternalComponents"/>
+                <path refid="slee"/>
+            </classpath>
+        </javac>
+        <sbbjar classpath="classes/FireInvite-sbb"
+            destfile="jars/FireInvite-sbb.jar" sbbjarxml="src/org/telcomp/sbb/FireInvite-sbb-jar.xml"/>
+    </target>
+    <target name="clean-FireInvite-sbb">
+        <delete file="jars/FireInvite-sbb.jar"/>
+        <delete dir="classes/FireInvite-sbb"/>
+    </target>
+    <target depends="init" name="build-StartThirdPartyCallTelcoService-event">
+        <mkdir dir="classes/StartThirdPartyCallTelcoService-event"/>
+        <mkdir dir="jars/"/>
+        <javac destdir="classes/StartThirdPartyCallTelcoService-event" includeantruntime="false"
+            includes="org/telcomp/events/StartThirdPartyCallTelcoServiceEvent.java" srcdir="src">
+            <classpath>
+                <path refid="slee"/>
+                <path refid="ExternalComponents"/>
+            </classpath>
+        </javac>
+        <eventjar classpath="classes/StartThirdPartyCallTelcoService-event"
+            destfile="jars/StartThirdPartyCallTelcoService-event.jar" eventjarxml="src/org/telcomp/events/StartThirdPartyCallTelcoService-event-jar.xml"/>
+    </target>
+    <target name="clean-StartThirdPartyCallTelcoService-event">
+        <delete file="jars/StartThirdPartyCallTelcoService-event.jar"/>
+        <delete dir="classes/StartThirdPartyCallTelcoService-event"/>
+    </target>
+    <target depends="init" name="build-EndThirdPartyCallTelcoService-event">
+        <mkdir dir="classes/EndThirdPartyCallTelcoService-event"/>
+        <mkdir dir="jars/"/>
+        <javac destdir="classes/EndThirdPartyCallTelcoService-event" includeantruntime="false"
+            includes="org/telcomp/events/EndThirdPartyCallTelcoServiceEvent.java" srcdir="src">
+            <classpath>
+                <path refid="slee"/>
+                <path refid="ExternalComponents"/>
+            </classpath>
+        </javac>
+        <eventjar classpath="classes/EndThirdPartyCallTelcoService-event"
+            destfile="jars/EndThirdPartyCallTelcoService-event.jar" eventjarxml="src/org/telcomp/events/EndThirdPartyCallTelcoService-event-jar.xml"/>
+    </target>
+    <target name="clean-EndThirdPartyCallTelcoService-event">
+        <delete file="jars/EndThirdPartyCallTelcoService-event.jar"/>
+        <delete dir="classes/EndThirdPartyCallTelcoService-event"/>
+    </target>
+    <target depends="init" name="build-B2BUA-sbb">
+        <mkdir dir="classes/B2BUA-sbb"/>
+        <mkdir dir="jars/"/>
+        <javac destdir="classes/B2BUA-sbb" includeantruntime="false"
+            includes="org/telcomp/sbb/B2BUASbb.java" srcdir="src">
+            <classpath>
+                <path refid="path-B2BUA-sbb"/>
+                <path refid="ExternalComponents"/>
+                <path refid="slee"/>
+            </classpath>
+        </javac>
+        <sbbjar classpath="classes/B2BUA-sbb"
+            destfile="jars/B2BUA-sbb.jar" sbbjarxml="src/org/telcomp/sbb/B2BUA-sbb-jar.xml"/>
+    </target>
+    <target name="clean-B2BUA-sbb">
+        <delete file="jars/B2BUA-sbb.jar"/>
+        <delete dir="classes/B2BUA-sbb"/>
+    </target>
+    <target
+        depends="build-B2BUA-sbb,build-Contact-sbb,build-FireInvite-sbb,build-EndThirdPartyCallTelcoService-event,build-StartThirdPartyCallTelcoService-event" name="build-thirdPartyCall-DU">
+        <mkdir dir="classes/thirdPartyCall-DU"/>
+        <copy
+            file="src/org/telcomp/service/thirdPartyCall-deployable-unit.xml" tofile="classes/thirdPartyCall-DU/deployable-unit.xml"/>
+        <jar jarfile="jars/thirdPartyCall-DU.jar">
+            <metainf dir="classes/thirdPartyCall-DU" includes="deployable-unit.xml"/>
+            <fileset dir="" includes="jars/B2BUA-sbb.jar"/>
+            <fileset dir="" includes="jars/Contact-sbb.jar"/>
+            <fileset dir="" includes="jars/FireInvite-sbb.jar"/>
+            <fileset dir="" includes="jars/EndThirdPartyCallTelcoService-event.jar"/>
+            <fileset dir="" includes="jars/StartThirdPartyCallTelcoService-event.jar"/>
+            <fileset dir="." includes="src/org/telcomp/service/thirdPartyCall-service.xml"/>
+        </jar>
+    </target>
+    <target name="clean-thirdPartyCall-DU">
+        <delete file="jars/thirdPartyCall-DU.jar"/>
+        <delete dir="classes/thirdPartyCall-DU"/>
+    </target>
+</project>

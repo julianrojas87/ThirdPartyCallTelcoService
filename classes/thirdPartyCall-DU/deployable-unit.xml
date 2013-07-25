@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE deployable-unit PUBLIC "-//Sun Microsystems, Inc.//DTD JAIN SLEE Deployable Unit 1.1//EN"
+                                 "http://java.sun.com/dtd/slee-deployable-unit_1_1.dtd">
+<deployable-unit>
+    <jar>jars/B2BUA-sbb.jar</jar>
+    <jar>jars/Contact-sbb.jar</jar>
+    <jar>jars/FireInvite-sbb.jar</jar>
+    <jar>jars/EndThirdPartyCallTelcoService-event.jar</jar>
+    <jar>jars/StartThirdPartyCallTelcoService-event.jar</jar>
+    <service-xml>src/org/telcomp/service/thirdPartyCall-service.xml</service-xml>
+</deployable-unit>
