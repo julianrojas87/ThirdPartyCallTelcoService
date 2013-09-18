@@ -55,6 +55,11 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 	private final String Call_Established = "Call Established";
 
 	public void onStartThirdPartyCallTelcoServiceEvent(StartThirdPartyCallTelcoServiceEvent event, ActivityContextInterface aci) {
+		System.out.println("*******************************************");
+		System.out.println("ThirdPartyCallTelcoService Invoked");
+		System.out.println("Input Caller = "+event.getCaller());
+		System.out.println("Input Callee = "+event.getCallee());
+		
 		this.setDialogFlag(true);
 		this.setErrorFlag(false);
 		this.setMainAci(aci);
@@ -79,6 +84,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 				EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 				this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, aci, null);
 				aci.detach(this.sbbContext.getSbbLocalObject());
+				System.out.println("Output Caller = "+caller);
+				System.out.println("Output Callee = "+callee);
+				System.out.println("Output Result = "+this.Caller_Not_Existent);
+				System.out.println("*******************************************");
 			} else {
 				if (contactSbb.getState(caller).equals("offline")) {
 					// Caller is offline so Invite request can't be send
@@ -89,6 +98,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 					EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 					this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, aci, null);
 					aci.detach(this.sbbContext.getSbbLocalObject());
+					System.out.println("Output Caller = "+caller);
+					System.out.println("Output Callee = "+callee);
+					System.out.println("Output Result = "+this.Caller_Not_Available);
+					System.out.println("*******************************************");
 				} else {
 					// Fire Initial Invite to Caller's UA
 					String[] data = new String[3];
@@ -143,6 +156,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 					EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 					this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 					this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+					System.out.println("Output Caller = "+this.getCaller());
+					System.out.println("Output Callee = "+this.getCallee());
+					System.out.println("Output Result = "+this.Callee_Not_Existent);
+					System.out.println("*******************************************");
 				} else {
 					// Checking if user is available
 					if (contactSbb.getState(users[0]).equals("offline")) {
@@ -154,6 +171,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 						EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 						this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 						this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+						System.out.println("Output Caller = "+this.getCaller());
+						System.out.println("Output Callee = "+this.getCallee());
+						System.out.println("Output Result = "+this.Callee_Not_Available);
+						System.out.println("*******************************************");
 					} else {
 						aci.detach(contactSbb);
 						// Getting first user SDP and firing second INVITE.
@@ -189,6 +210,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 				EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 				this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 				this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+				System.out.println("Output Caller = "+this.getCaller());
+				System.out.println("Output Callee = "+this.getCallee());
+				System.out.println("Output Result = "+this.Call_Established);
+				System.out.println("*******************************************");
 			} catch(Exception e){
 				e.printStackTrace();
 			}
@@ -229,6 +254,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 			EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 			this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 			this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+			System.out.println("Output Caller = "+this.getCaller());
+			System.out.println("Output Callee = "+this.getCallee());
+			System.out.println("Output Result = "+this.Callee_Occupied);
+			System.out.println("*******************************************");
 		 } else{
 			 //Caller occupied
 			 HashMap<String, Object> operationInputs = new HashMap<String, Object>();
@@ -238,6 +267,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 				EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 				this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 				this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+				System.out.println("Output Caller = "+this.getCaller());
+				System.out.println("Output Callee = "+this.getCallee());
+				System.out.println("Output Result = "+this.Caller_Occupied);
+				System.out.println("*******************************************");
 		 }
 	}
 
@@ -252,6 +285,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 			EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 			this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 			this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+			System.out.println("Output Caller = "+this.getCaller());
+			System.out.println("Output Callee = "+this.getCallee());
+			System.out.println("Output Result = "+this.Call_Rejected_by_Callee);
+			System.out.println("*******************************************");
 		 } else{
 			 //Call rejected by caller
 			 HashMap<String, Object> operationInputs = new HashMap<String, Object>();
@@ -261,6 +298,10 @@ public abstract class B2BUASbb implements javax.slee.Sbb {
 				EndThirdPartyCallTelcoServiceEvent endThirdPartyCallTelcoServiceEvent = new EndThirdPartyCallTelcoServiceEvent(operationInputs);
 				this.fireEndThirdPartyCallTelcoServiceEvent(endThirdPartyCallTelcoServiceEvent, this.getMainAci(), null);
 				this.getMainAci().detach(this.sbbContext.getSbbLocalObject());
+				System.out.println("Output Caller = "+this.getCaller());
+				System.out.println("Output Callee = "+this.getCallee());
+				System.out.println("Output Result = "+this.Call_Rejected_by_Caller);
+				System.out.println("*******************************************");
 		 }
 	}
 
